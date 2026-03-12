@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>フォントだめし！</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=M+PLUS+Rounded+1c:wght@100;300;400;500;700;800;900&family=Noto+Sans+JP:wght@100;200;300;400;500;600;700;800;900&family=Noto+Serif+JP:wght@200;300;400;500;600;700;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Inter', 'Noto Sans JP', sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  h1 {
+    text-align: center;
+    color: #2c3e50;
+  }
+  .controls {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin-bottom: 24px;
+  }
+  label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  input, select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+  }
+  input:focus, select:focus {
+    border-color: #3182ce;
+    outline: none;
+  }
+  .preview-container {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+  .preview-item {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed #e2e8f0;
+  }
+  .preview-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  .weight-label {
+    font-size: 13px;
+    color: #718096;
+    margin-bottom: 8px;
+    font-family: monospace;
+    background: #edf2f7;
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  .preview-text {
+    font-size: 32px; /* 見やすいように大きめのサイズ */
+    word-break: break-all;
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+
+  <h1>✨ フォントだめし！ ✨</h1>
+  
+  <div class="controls">
+    <label for="textInput">プレビューする文字：</label>
+    <input type="text" id="textInput" value="あいうえお ABC 123" placeholder="適当な文字を入力してね！">
+    
+    <label for="fontSelect">フォントを選ぶ：</label>
+    <select id="fontSelect">
+      <option value="'Noto Sans JP', sans-serif">Noto Sans JP (定番ゴシック)</option>
+      <option value="'Inter', sans-serif">Inter (人気の欧文フォント)</option>
+      <option value="'Noto Serif JP', serif">Noto Serif JP (美しい明朝体)</option>
+      <option value="'Roboto', sans-serif">Roboto (Google標準欧文)</option>
+      <option value="'M PLUS Rounded 1c', sans-serif">M PLUS Rounded 1c (かわいい丸ゴシック)</option>
+    </select>
+  </div>
+
+  <div class="preview-container" id="previewContainer">
+    </div>
+
+  <script>
+    const textInput = document.getElementById('textInput');
+    const fontSelect = document.getElementById('fontSelect');
+    const previewContainer = document.getElementById('previewContainer');
+
+    // 100から900までのウェイト定義
+    const weights = [
+      { weight: 100, name: '100 - Thin' },
+      { weight: 200, name: '200 - Extra Light' },
+      { weight: 300, name: '300 - Light' },
+      { weight: 400, name: '400 - Regular' },
+      { weight: 500, name: '500 - Medium' },
+      { weight: 600, name: '600 - Semi Bold' },
+      { weight: 700, name: '700 - Bold' },
+      { weight: 800, name: '800 - Extra Bold' },
+      { weight: 900, name: '900 - Black' }
+    ];
+
+    // プレビューを更新する関数
+    function updatePreview() {
+      const text = textInput.value || ' ';
+      const fontFamily = fontSelect.value;
+      
+      previewContainer.innerHTML = ''; // 一旦クリア
+
+      weights.forEach(w => {
+        const item = document.createElement('div');
+        item.className = 'preview-item';
+        
+        const label = document.createElement('div');
+        label.className = 'weight-label';
+        label.textContent = w.name;
+        
+        const previewText = document.createElement('div');
+        previewText.className = 'preview-text';
+        previewText.textContent = text;
+        previewText.style.fontFamily = fontFamily;
+        previewText.style.fontWeight = w.weight;
+        
+        item.appendChild(label);
+        item.appendChild(previewText);
+        previewContainer.appendChild(item);
+      });
+    }
+
+    // 入力や選択が変わった瞬間に画面を更新
+    textInput.addEventListener('input', updatePreview);
+    fontSelect.addEventListener('change', updatePreview);
+
+    // 最初から表示させるために1回実行
+    updatePreview();
+  </script>
+
+</body>
+</html>
